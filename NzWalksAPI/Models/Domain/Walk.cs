@@ -17,7 +17,7 @@
         
 
         //Navigation Properties
-        public Difficulty DifficultyName { get; set; }
-        public Region RegionName { get; set; }
+        public Difficulty Difficulty { get; set; }
+        public Region Region { get; set; }
     }
 }
