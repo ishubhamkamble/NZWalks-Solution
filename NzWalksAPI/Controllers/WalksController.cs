@@ -22,7 +22,8 @@ namespace NzWalksAPI.Controllers
 
 
 
-        //Create Walk POST() : /api/walks
+        //Create Walk
+        //POST() : /api/walks
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
@@ -32,6 +33,17 @@ namespace NzWalksAPI.Controllers
 
             //map Domain model to DTO
             return Ok(mapper.Map<WalksDto>(walkDomainModel));
+        }
+
+        //GET All Walks
+        //GET : /api/Walks
+        [HttpGet]
+        public async Task<IActionResult> GetAll() 
+        {
+            var walkDomainModel = await walkRepository.GetAllAysnc();
+
+            //Map Domain Model to DTO using AutoMapper
+            return Ok(mapper.Map<List<WalksDto>>(walkDomainModel));
         }
     }
 }
