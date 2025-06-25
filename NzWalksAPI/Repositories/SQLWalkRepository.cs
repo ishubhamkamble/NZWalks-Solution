@@ -22,7 +22,11 @@ namespace NzWalksAPI.Repositories
 
         public async Task<List<Walk>> GetAllAysnc()
         {
-            return await dbContext.Walks.ToListAsync();
+            return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+
+            //OR
+            //Another way for Navigation properties
+            //return await dbContext.Walks.Include(x=>x.DifficultyName).Include(x=>x.RegionName).ToListAsync();
         }
     }
 }
