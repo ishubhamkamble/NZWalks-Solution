@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using NzWalksAPI.Models.Domain;
 using NzWalksAPI.Models.DTO;
 using NzWalksAPI.Repositories;
@@ -38,7 +39,7 @@ namespace NzWalksAPI.Controllers
         //GET All Walks
         //GET : /api/Walks
         [HttpGet]
-        public async Task<IActionResult> GetAll() 
+        public async Task<IActionResult> GetAll()
         {
             var walkDomainModel = await walkRepository.GetAllAysnc();
 
@@ -69,7 +70,7 @@ namespace NzWalksAPI.Controllers
         {
             //Map DTO to Domain Model
             var walkDomainModel = mapper.Map<Walk>(updateWalkRequestDto);
-            walkDomainModel =  await walkRepository.UpdateAsync(id, walkDomainModel);
+            walkDomainModel = await walkRepository.UpdateAsync(id, walkDomainModel);
 
             if (walkDomainModel == null)
             {
@@ -80,5 +81,20 @@ namespace NzWalksAPI.Controllers
             return Ok(mapper.Map<Walk>(walkDomainModel));
         }
 
+        //Delete a walk by Id
+        //DELETE :  /api/walks/{id}
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var deletedWalkDomainModel = await walkRepository.DeleteAsync(id);
+            if (deletedWalkDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            //Map Domain Model to DTO
+            return Ok(mapper.Map<WalksDto>(deletedWalkDomainModel));
+        }
     }
 }
