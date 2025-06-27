@@ -20,13 +20,34 @@ namespace NzWalksAPI.Repositories
             return walk;
         }
 
-        public async Task<List<Walk>> GetAllAysnc()
+        public async Task<List<Walk>> GetAllAysnc(string? filterOn = null, string? filterQuery = null)
         {
-            return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+            //To get reference contraints values in result
+            //return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
 
             //OR
             //Another way for Navigation properties
             //return await dbContext.Walks.Include(x=>x.DifficultyName).Include(x=>x.RegionName).ToListAsync();
+
+            //Filtering Implementation
+            var walks = dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
+            if (string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
+            {
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = walks.Where(x => x.Name.Contains(filterQuery));
+                }
+                else if (filterOn.Equals("Description", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = walks.Where(x => x.Description.Contains(filterQuery));
+                }
+                else if (filterOn.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
+                {
+                    int length = Convert.ToInt32(filterQuery);
+                    walks = walks.Where(x => x.LengthInKm==length);
+                }
+            }
+            return await walks.ToListAsync();
         }
 
         public async Task<Walk?> GetByIdAsync(Guid id)
