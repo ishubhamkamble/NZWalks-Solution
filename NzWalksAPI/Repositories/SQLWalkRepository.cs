@@ -20,7 +20,7 @@ namespace NzWalksAPI.Repositories
             return walk;
         }
 
-        public async Task<List<Walk>> GetAllAysnc(string? filterOn = null, string? filterQuery = null)
+        public async Task<List<Walk>> GetAllAysnc(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending = true)
         {
             //To get reference contraints values in result
             //return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
@@ -44,8 +44,26 @@ namespace NzWalksAPI.Repositories
                 else if (filterOn.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
                 {
                     int length = Convert.ToInt32(filterQuery);
-                    walks = walks.Where(x => x.LengthInKm==length);
+                    walks = walks.Where(x => x.LengthInKm == length);
                 }
+            }
+
+            //Sorting
+            if (string.IsNullOrWhiteSpace(sortBy)==false)
+            {
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = isAscending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x => x.Name);
+                }
+                else if (sortBy.Equals("Description", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = isAscending ? walks.OrderBy(x => x.Description) : walks.OrderByDescending(x => x.Description);
+                }
+                else if (sortBy.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = isAscending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending(x => x.LengthInKm);
+                }
+                    
             }
             return await walks.ToListAsync();
         }
