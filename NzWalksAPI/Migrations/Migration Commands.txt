@@ -1,0 +1,15 @@
+﻿This file contains the all Entity Framework Core migration commands used for this NZWalksAPI project from start to end. 
+
+##While Adding and migrating the new DBContext "NZWalksDbContext"
+
+PM> Add-Migration "Seeding data for difficulties and Regions"
+
+PM> Update-Database "Seeding data for difficulties and Regions"
+
+---------------------------------------------------------------------------------------------------------------------
+
+## Adding and migrating the new DBContext "NZWalksAuthDbContext", we need to pass customized comamnd with -Context
+
+PM> Add-Migration "Creating Auth Database" -Context "NZWalksAuthDbContext"
+
+PM> Update-Database -Context "NZWalksAuthDbContext"
