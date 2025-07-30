@@ -30,6 +30,7 @@ namespace NzWalksAPI.Controllers
         //POST() : /api/walks
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
             //Map DTO to domain Model
@@ -43,6 +44,7 @@ namespace NzWalksAPI.Controllers
         //GET All Walks
         //GET : /api/Walks?filterOn=name&filterQuery=Garden&sortBy=Name&IsAscending=true
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery, 
             [FromQuery]string? sortBy, [FromQuery]bool? isAscending,
             [FromQuery]int pageNumber = 1, [FromQuery] int pageSize = 1000)
@@ -57,6 +59,7 @@ namespace NzWalksAPI.Controllers
         //GET : /api/walk/id
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var walkDomainModel = await walkRepository.GetByIdAsync(id);
@@ -73,6 +76,7 @@ namespace NzWalksAPI.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateAysnc([FromRoute] Guid id, UpdateWalkRequestDto updateWalkRequestDto)
         {
             //Map DTO to Domain Model
@@ -92,6 +96,7 @@ namespace NzWalksAPI.Controllers
         //DELETE :  /api/walks/{id}
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var deletedWalkDomainModel = await walkRepository.DeleteAsync(id);
