@@ -16,6 +16,7 @@ namespace NzWalksAPI.Data
 
         public DbSet<Walk> Walks { get; set; }
 
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -102,9 +103,9 @@ namespace NzWalksAPI.Data
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Commands for Seeding data OR migration of data from code to database
 /// - Open Package manager console in Visual studio : 
-/// PM> Add-Migration "Seeding data for Difficulties and Regions"
+/// PM> Add-Migration "Seeding data for Difficulties and Regions" -Context "NZWalksDbContext"
 /// 
-/// PM> Update-Database
+/// PM> Update-Database -Context "NZWalksDbContext"
 /// 
 /// 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
