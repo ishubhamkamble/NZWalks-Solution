@@ -56,6 +56,9 @@ namespace NzWalksAPI.Controllers
             logger.LogInformation("GetAll(): action method invoked");
             var walkDomainModel = await walkRepository.GetAllAysnc(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
 
+            //Create an exception 
+            throw new Exception("This is a new exception.");
+
             logger.LogInformation($"GetById(): All walks fetched successfully :  {JsonSerializer.Serialize(walkDomainModel)}");
             //Map Domain Model to DTO using AutoMapper
             return Ok(mapper.Map<List<WalksDto>>(walkDomainModel));
